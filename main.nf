@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
-include {fastqc} from "./modules/qc.nf"
+include {fastqc; fastp} from "./modules/qc.nf"
 
 workflow {
     Channel
@@ -11,4 +11,5 @@ workflow {
         .set{ ion }
 
     fastqc(ion)
+    fastp(ion)
 }
