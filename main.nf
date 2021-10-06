@@ -25,10 +25,10 @@ workflow {
 
     fastqc.out.all
         .collect()
-        .set{multiqc_input}
+        .set{fastqc_for_multiqc}
 
     spades(fastp.out.trimmed_reads)
     quast(spades.out.contigs)
     
-    multiqc(multiqc_input)
+    multiqc(fastqc_for_multiqc, quast.out.report)
 }

@@ -48,7 +48,8 @@ process quast {
 process multiqc {
     label "multiqc"
     input:
-        path(multiqc_input)
+        path(fastqc_for_multiqc)
+        path(quast_report)
     output:
         path("multiqc_report.html")
     script:
