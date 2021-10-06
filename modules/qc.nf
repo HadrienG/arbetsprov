@@ -47,6 +47,7 @@ process quast {
 
 process multiqc {
     label "multiqc"
+    publishDir "${params.output}/", mode: "copy"
     input:
         path(fastqc_for_multiqc)
         path(quast_report)

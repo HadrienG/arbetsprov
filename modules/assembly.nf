@@ -16,6 +16,7 @@ process unicycler {
 process spades {
     tag "assembly: ${prefix}"
     label "spades"
+    publishDir "${params.output}/", mode: "copy"
     input:
         tuple val(prefix), path(reads)
     output:

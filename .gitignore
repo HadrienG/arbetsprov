@@ -3,6 +3,7 @@
 
 # large files
 data/
+results/
 
 # nextflow stuff
 .nextflow.log*
