@@ -1,0 +1,7 @@
+# large files
+data/
+
+# nextflow stuff
+.nextflow.log*
+work/
+.nextflow/
