@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        nxf_ver: ["21.04.03", ""]
+        nxf_ver: ["21.04.0", ""]
     steps:
       - uses: actions/checkout@v1
       - name: Install nextflow
