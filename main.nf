@@ -1,7 +1,7 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
-include {fastqc; fastp; multiqc} from "./modules/qc.nf"
+include {fastqc; fastp; quast; multiqc} from "./modules/qc.nf"
 include {spades} from "./modules/assembly.nf"
 
 workflow {
@@ -28,6 +28,7 @@ workflow {
         .set{multiqc_input}
 
     spades(fastp.out.trimmed_reads)
+    quast(spades.out.contigs)
     
     multiqc(multiqc_input)
 }

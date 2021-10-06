@@ -31,6 +31,20 @@ process fastp {
 }
 
 
+process quast {
+    tag "assembly qc: ${prefix}"
+    label "quast"
+    input:
+        tuple val(prefix), path(assembly)
+    output:
+        path("quast_results/"), emit: report
+    script:
+        """
+        quast.py -t "${task.cpus}" -l "${prefix}" "${assembly}"
+        """
+}
+
+
 process multiqc {
     label "multiqc"
     input:
