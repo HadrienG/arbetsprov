@@ -9,6 +9,7 @@ Given short reads, long reads or a mixture of both the pipeline performs QC, ass
 The pipeline use the following tools:
 
 - [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and [fastp](https://github.com/OpenGene/fastp) for short read quality control
+- [SPADes](https://cab.spbu.ru/software/spades/) for short read assembly
 - [MultiQC](https://multiqc.info/) for aggregating read and assembly QC metrics
 
 ## Usage
