@@ -1,8 +1,14 @@
 #!/usr/bin/env nextflow
 nextflow.enable.dsl = 2
 
-include {hello_world} from "./modules/hello.nf"
+include {fastqc} from "./modules/qc.nf"
 
 workflow {
-    hello_world("hello world!")
+    Channel
+        .fromPath(params.ion)
+        .map { file -> tuple(file.simpleName, file) }
+        .dump()
+        .set{ ion }
+
+    fastqc(ion)
 }
