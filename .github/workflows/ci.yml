@@ -16,4 +16,4 @@ jobs:
             sudo mv nextflow /usr/local/bin/
       - name: Run workflow
         run: |
-            make run
+            make ci
