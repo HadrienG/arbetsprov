@@ -11,5 +11,5 @@ workflow {
         .set{ ion }
 
     fastqc(ion)
-    fastp(ion)
+    fastp(ion, params.fastp_trim, params.fastp_filter, params.fastp_len)
 }
