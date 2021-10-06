@@ -2,6 +2,7 @@
 nextflow.enable.dsl = 2
 
 include {fastqc; fastp; multiqc} from "./modules/qc.nf"
+include {spades} from "./modules/assembly.nf"
 
 workflow {
     Channel
@@ -25,5 +26,8 @@ workflow {
     fastqc.out.all
         .collect()
         .set{multiqc_input}
+
+    spades(fastp.out.trimmed_reads)
+    
     multiqc(multiqc_input)
 }

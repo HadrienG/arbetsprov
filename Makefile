@@ -1,5 +1,5 @@
 run:
-	nextflow run main.nf -profile docker
+	nextflow run main.nf -resume -profile docker
 
 clean:
 	rm -rf work/
