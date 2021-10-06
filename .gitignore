@@ -1,3 +1,6 @@
+# mac files
+.DS_Store
+
 # large files
 data/
 
