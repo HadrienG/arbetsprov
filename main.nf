@@ -3,6 +3,7 @@ nextflow.enable.dsl = 2
 
 include {fastqc; fastp; quast; multiqc} from "./modules/qc.nf"
 include {spades} from "./modules/assembly.nf"
+include {build_db; assign_taxonomy} from "./modules/taxonomy.nf"
 
 workflow {
     Channel
@@ -31,4 +32,7 @@ workflow {
     quast(spades.out.contigs)
     
     multiqc(fastqc_for_multiqc, quast.out.report)
+
+    build_db()
+    assign_taxonomy(spades.out.contigs, build_db.out.database)
 }
