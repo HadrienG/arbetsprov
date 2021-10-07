@@ -18,9 +18,23 @@ process assign_taxonomy {
         tuple val(prefix), path(assembly)
         path(db)
     output:
-        tuple val(prefix), path("taxonomy_*")
+        tuple val(prefix), path("taxonomy_lca.tsv"), emit: lca
     script:
         """
         mmseqs easy-taxonomy "${assembly}" "${db}/swissprot" taxonomy tmp
+        """
+}
+
+
+process download_related {
+    label "biopython"
+    input:
+        tuple val(prefix), path(taxonomy)
+    output:
+        tuple val(prefix), path("GCF*.fasta.gz"), emit: genomes
+        tuple val(prefix), path("GCF*.faa.gz"), emit: proteomes
+    script:
+        """
+        download.py --lca "${taxonomy}"
         """
 }
