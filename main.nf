@@ -5,6 +5,7 @@ include {fastqc; fastp; quast; multiqc} from "./modules/qc.nf"
 include {spades} from "./modules/assembly.nf"
 include {build_db; assign_taxonomy;
          download_related} from "./modules/taxonomy.nf"
+include {prodigal} from "./modules/annotation.nf"
 
 workflow {
     Channel
@@ -37,4 +38,5 @@ workflow {
     build_db()
     assign_taxonomy(spades.out.contigs, build_db.out.database)
     download_related(assign_taxonomy.out.lca)
+    prodigal(spades.out.contigs)
 }
