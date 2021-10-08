@@ -32,9 +32,11 @@ process download_related {
         tuple val(prefix), path(taxonomy)
     output:
         tuple val(prefix), path("GCF*.fasta.gz"), emit: genomes
-        tuple val(prefix), path("GCF*.faa.gz"), emit: proteomes
+        tuple val(prefix), path("renamed/GCF*.faa"), emit: proteomes
     script:
         """
+        mkdir renamed
         download.py --lca "${taxonomy}"
+        rename.py --outdir renamed --faa *.faa.gz
         """
 }
