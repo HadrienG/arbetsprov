@@ -6,6 +6,7 @@ include {spades} from "./modules/assembly.nf"
 include {build_db; assign_taxonomy;
          download_related} from "./modules/taxonomy.nf"
 include {prodigal} from "./modules/annotation.nf"
+include {cd_hit} from "./modules/phylogeny.nf"
 
 workflow {
     Channel
@@ -39,4 +40,10 @@ workflow {
     assign_taxonomy(spades.out.contigs, build_db.out.database)
     download_related(assign_taxonomy.out.lca)
     prodigal(spades.out.contigs)
+
+    prodigal.out.proteins
+        .join(download_related.out.proteomes, by:0)
+        .dump()
+        .set{cd_hit_input}
+    cd_hit(cd_hit_input)
 }
