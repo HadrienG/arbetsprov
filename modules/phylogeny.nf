@@ -44,3 +44,17 @@ process mafft {
         mafft "${cluster}" > "${cluster}.aln"
         """
 }
+
+
+process concat_msa {
+    tag "msa"
+    label "biopython"
+    input:
+        path(msas)
+    output:
+        path("msa_concat.align"), emit: msa
+    script:
+        """
+        concat_msa.py --msa ${msas} --output msa_concat.align
+        """
+}

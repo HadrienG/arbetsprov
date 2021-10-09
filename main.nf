@@ -6,7 +6,8 @@ include {spades} from "./modules/assembly.nf"
 include {build_db; assign_taxonomy;
          download_related} from "./modules/taxonomy.nf"
 include {prodigal; rename_proteins} from "./modules/annotation.nf"
-include {cd_hit; select_clusters; mafft} from "./modules/phylogeny.nf"
+include {cd_hit; select_clusters; mafft;
+         concat_msa} from "./modules/phylogeny.nf"
 
 workflow {
     Channel
@@ -54,4 +55,5 @@ workflow {
         .dump()
         .set{mafft_input}
     mafft(mafft_input)
+    concat_msa(mafft.out.msa.collect())
 }
