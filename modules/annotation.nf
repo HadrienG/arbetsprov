@@ -28,3 +28,17 @@ process rename_proteins {
         rename.py --outdir renamed --faa "${proteins}"
         """
 }
+
+
+process abricate {
+    tag "antiobiotic resistance: ${prefix}"
+    label "abricate"
+    input:
+        tuple val(prefix), path(assembly)
+    output:
+        tuple val(prefix), path("${prefix}.resistance.txt")
+    script:
+        """
+        abricate "${assembly}" > "${prefix}.resistance.txt"
+        """
+}
