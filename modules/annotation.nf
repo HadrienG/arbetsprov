@@ -28,3 +28,45 @@ process rename_proteins {
         rename.py --outdir renamed --faa "${proteins}"
         """
 }
+
+
+process abricate {
+    tag "antiobiotic resistance: ${prefix}"
+    label "abricate"
+    input:
+        tuple val(prefix), path(assembly)
+    output:
+        tuple val(prefix), path("${prefix}.resistance.txt")
+    script:
+        """
+        abricate "${assembly}" > "${prefix}.resistance.txt"
+        """
+}
+
+
+process platon_db {
+    tag "plasmid detection: db download"
+    output:
+        path("db"), emit: database
+    script:
+        """
+        wget https://zenodo.org/record/4066768/files/db.tar.gz
+        tar -xzf db.tar.gz
+        """
+}
+
+
+process platon {
+    tag "plasmid detection: ${prefix}"
+    label "platon"
+    input:
+        tuple val(prefix), path(assembly)
+        path(database)
+    output:
+        tuple val(prefix), val("${prefix}.*"), emit: results
+    script:
+        """
+        platon --threads "${task.cpus}" --db "${database}" \
+            "${assembly}"
+        """
+}

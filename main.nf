@@ -5,7 +5,8 @@ include {fastqc; fastp; quast; multiqc} from "./modules/qc.nf"
 include {spades; spades_hybrid} from "./modules/assembly.nf"
 include {build_db; assign_taxonomy;
          download_related} from "./modules/taxonomy.nf"
-include {prodigal; rename_proteins} from "./modules/annotation.nf"
+include {prodigal; rename_proteins; abricate;
+         platon_db; platon} from "./modules/annotation.nf"
 include {cd_hit; select_clusters; mafft;
          concat_msa; fasttree} from "./modules/phylogeny.nf"
 
@@ -65,4 +66,7 @@ workflow {
     concat_msa(mafft.out.msa.collect())
     fasttree(concat_msa.out.msa)
 
+    abricate(spades_hybrid.out.contigs)
+    platon_db()
+    platon(spades_hybrid.out.contigs, platon_db.out.database)
 }
