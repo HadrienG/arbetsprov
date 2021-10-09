@@ -23,10 +23,24 @@ process select_clusters {
         tuple val(prefix), path(clusters)
         tuple val(prefix), path(proteins), path(related_proteomes)
     output:
-        tuple val(prefix), path("clusters/*.faa"), emit: clusters
+        path("clusters/*.faa"), emit: clusters
     script:
         """
         mkdir clusters
         select_clusters.py --clstr "${clusters}" --faa_dir . --outdir clusters
+        """
+}
+
+
+process mafft {
+    tag "msa"
+    label "mafft"
+    input:
+        path(cluster)
+    output:
+        path("*.aln"), emit: msa
+    script:
+        """
+        mafft "${cluster}" > "${cluster}.aln"
         """
 }

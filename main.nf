@@ -6,7 +6,7 @@ include {spades} from "./modules/assembly.nf"
 include {build_db; assign_taxonomy;
          download_related} from "./modules/taxonomy.nf"
 include {prodigal; rename_proteins} from "./modules/annotation.nf"
-include {cd_hit; select_clusters} from "./modules/phylogeny.nf"
+include {cd_hit; select_clusters; mafft} from "./modules/phylogeny.nf"
 
 workflow {
     Channel
@@ -48,4 +48,10 @@ workflow {
         .set{cd_hit_input}
     cd_hit(cd_hit_input)
     select_clusters(cd_hit.out.clusters, cd_hit_input)
+
+    select_clusters.out.clusters
+        .flatten()
+        .dump()
+        .set{mafft_input}
+    mafft(mafft_input)
 }
