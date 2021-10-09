@@ -58,3 +58,17 @@ process concat_msa {
         concat_msa.py --msa ${msas} --output msa_concat.align
         """
 }
+
+
+process fasttree {
+    tag "phylogeny"
+    label "fasttree"
+    input:
+        path(msa)
+    output:
+        path("tree")
+    script:
+        """
+        fasttree < "${msa}" > tree
+        """
+}

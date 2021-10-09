@@ -7,7 +7,7 @@ include {build_db; assign_taxonomy;
          download_related} from "./modules/taxonomy.nf"
 include {prodigal; rename_proteins} from "./modules/annotation.nf"
 include {cd_hit; select_clusters; mafft;
-         concat_msa} from "./modules/phylogeny.nf"
+         concat_msa; fasttree} from "./modules/phylogeny.nf"
 
 workflow {
     Channel
@@ -56,4 +56,5 @@ workflow {
         .set{mafft_input}
     mafft(mafft_input)
     concat_msa(mafft.out.msa.collect())
+    fasttree(concat_msa.out.msa)
 }
