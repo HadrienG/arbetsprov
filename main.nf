@@ -2,7 +2,7 @@
 nextflow.enable.dsl = 2
 
 include {fastqc; fastp; quast; multiqc} from "./modules/qc.nf"
-include {spades} from "./modules/assembly.nf"
+include {spades; spades_hybrid} from "./modules/assembly.nf"
 include {build_db; assign_taxonomy;
          download_related} from "./modules/taxonomy.nf"
 include {prodigal; rename_proteins} from "./modules/annotation.nf"
@@ -15,6 +15,12 @@ workflow {
         .map { file -> tuple(file.simpleName, file) }
         .dump()
         .set{ ion }
+    
+    Channel
+        .fromPath(params.nanopore)
+        .map { file -> tuple(file.simpleName, file) }
+        .dump()
+        .set{ nanopore }
 
     fastp(ion, params.fastp_trim, params.fastp_filter, params.fastp_len)
 
@@ -33,7 +39,8 @@ workflow {
         .set{fastqc_for_multiqc}
 
     spades(fastp.out.trimmed_reads)
-    quast(spades.out.contigs)
+    spades_hybrid(fastp.out.trimmed_reads, nanopore)
+    quast(spades.out.contigs, spades_hybrid.out.contigs)
     
     multiqc(fastqc_for_multiqc, quast.out.report)
 
@@ -57,4 +64,5 @@ workflow {
     mafft(mafft_input)
     concat_msa(mafft.out.msa.collect())
     fasttree(concat_msa.out.msa)
+
 }
