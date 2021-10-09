@@ -3,6 +3,11 @@ nextflow.enable.dsl = 2
 
 include {fastqc; fastp; quast; multiqc} from "./modules/qc.nf"
 include {spades} from "./modules/assembly.nf"
+include {build_db; assign_taxonomy;
+         download_related} from "./modules/taxonomy.nf"
+include {prodigal; rename_proteins} from "./modules/annotation.nf"
+include {cd_hit; select_clusters; mafft;
+         concat_msa; fasttree} from "./modules/phylogeny.nf"
 
 workflow {
     Channel
@@ -31,4 +36,25 @@ workflow {
     quast(spades.out.contigs)
     
     multiqc(fastqc_for_multiqc, quast.out.report)
+
+    build_db()
+    assign_taxonomy(spades.out.contigs, build_db.out.database)
+    download_related(assign_taxonomy.out.lca)
+    prodigal(spades.out.contigs)
+    rename_proteins(prodigal.out.proteins)
+
+    rename_proteins.out.proteins
+        .join(download_related.out.proteomes, by:0)
+        .dump()
+        .set{cd_hit_input}
+    cd_hit(cd_hit_input)
+    select_clusters(cd_hit.out.clusters, cd_hit_input)
+
+    select_clusters.out.clusters
+        .flatten()
+        .dump()
+        .set{mafft_input}
+    mafft(mafft_input)
+    concat_msa(mafft.out.msa.collect())
+    fasttree(concat_msa.out.msa)
 }

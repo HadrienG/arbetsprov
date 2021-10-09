@@ -11,6 +11,11 @@ The pipeline use the following tools:
 - [Fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and [fastp](https://github.com/OpenGene/fastp) for short read quality control
 - [SPADes](https://cab.spbu.ru/software/spades/) for short read assembly
 - [MultiQC](https://multiqc.info/) for aggregating read and assembly QC metrics
+- [prodigal](https://github.com/hyattpd/Prodigal) for protein coding gene prediction
+- [mmseqs2](https://github.com/soedinglab/MMseqs2) for taxonomic classification
+- [cd-hit](http://weizhong-lab.ucsd.edu/cd-hit/) for protein clustering
+- [mafft](https://mafft.cbrc.jp/alignment/software/) for multiple sequence alignment
+- [fasttree](http://www.microbesonline.org/fasttree/) for phylogenetic analysis
 
 ## Usage
 
