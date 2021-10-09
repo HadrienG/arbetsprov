@@ -13,8 +13,10 @@ def concat_msa(msas, output):
         align = AlignIO.read(msa, "fasta")
         # shorten id so the concatenated alignment keeps it
         for record in align._records:
-            record.id = record.id.split("|")[0] 
-        alignments.append(align)
+            record.id = record.id.split("|")[0]
+        
+        if len(align._records) == 3:
+            alignments.append(align)
     
     concatenated_alignment = alignments[0]
     for alignment in alignments[1:]:

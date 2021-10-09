@@ -50,7 +50,7 @@ def select_clusters(cluster_file):
             clusters.append(cluster)
 
     for cluster in clusters:
-        if cluster.n >= 3 and \
+        if cluster.n == 3 and \
             cluster.mean_length > 1000 and \
             len(set(cluster.lengths)) == 1 and \
             len(set(cluster.genomes_of_origin)) == 3:

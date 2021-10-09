@@ -11,7 +11,7 @@ process cd_hit {
         cat *.faa > cdhit_proteins.faa
         # then run cd-hit
         cd-hit -i cdhit_proteins.faa -o "${prefix}.clustered.faa" \
-            -d 0 -d 0.95 -n 5 -T 6
+            -d 0 -d 0.95 -n 5 -T 6 -d 80
         """
 }
 
