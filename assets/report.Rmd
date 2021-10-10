@@ -13,6 +13,7 @@ output:
 
 ```{r load_pkgs, include=FALSE}
 library(fastqcr)
+library(tidyverse)
 ```
 
 # Quality Control
@@ -73,11 +74,36 @@ qc_plot(trimmed_file, "Per sequence GC content")
 
 # Short Reads Assembly
 
-*TODO*
+```{r include=FALSE}
+quast_report <- read_tsv("quast_results/latest/transposed_report.tsv")
+```
+
+```{r}
+quast_report %>%
+    filter(Assembly == "IonTorrent") %>% 
+    select(Assembly, `# contigs (>= 1000 bp)`, `Total length (>= 1000 bp)`,
+           N50)
+```
 
 # Taxonomy
 
-*TODO*
+```{r include=FALSE}
+best_hit <- read_delim("best_hit.txt", delim = "\t", col_names = FALSE)$X1 %>% 
+    as.character()
+mlst <- read_tsv("mlst_results.allele.csv", skip = 5)
+```
+
+```{r}
+best_hit
+```
+
+```{r}
+mlst
+```
+
+## Phylogeny
+
+Module under construction
 
 # Hybrid Assembly
 

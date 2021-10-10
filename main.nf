@@ -82,5 +82,8 @@ workflow {
     Channel
         .fromPath(params.css)
         .set{css}
-    make_report(rmd, css, fastqc_for_multiqc)
+    make_report(rmd, css,
+                fastqc_for_multiqc, quast.out.report,
+                download_related.out.best_hit, mlst_check.out.mlst
+    )
 }
