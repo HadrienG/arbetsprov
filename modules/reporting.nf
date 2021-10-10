@@ -9,6 +9,8 @@ process make_report {
         path(quast_out)
         tuple val(prefix_0), path(best_hit)
         tuple val(prefix_1), path(mlst)
+        tuple val(prefix_2), path(abricate)
+        tuple val(prefix_3), path(platon)
     output:
         path("report.html"), emit: report
     script:

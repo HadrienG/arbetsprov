@@ -34,6 +34,7 @@ process fastp {
 process quast {
     tag "assembly qc"
     label "quast"
+    publishDir "${params.output}/", mode: "copy"
     input:
         tuple val(prefix), path(assembly)
         tuple val(prefix_long), path(assembly_long)

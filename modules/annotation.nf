@@ -49,7 +49,7 @@ process abricate {
     input:
         tuple val(prefix), path(assembly)
     output:
-        tuple val(prefix), path("${prefix}.resistance.txt")
+        tuple val(prefix), path("${prefix}.resistance.txt"), emit: results
     script:
         """
         abricate "${assembly}" > "${prefix}.resistance.txt"
@@ -76,7 +76,7 @@ process platon {
         tuple val(prefix), path(assembly)
         path(database)
     output:
-        tuple val(prefix), val("${prefix}.*"), emit: results
+        tuple val(prefix), path("scaffolds.*"), emit: results
     script:
         """
         platon --threads "${task.cpus}" --db "${database}" \

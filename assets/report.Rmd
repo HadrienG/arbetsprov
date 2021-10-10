@@ -107,11 +107,37 @@ Module under construction
 
 # Hybrid Assembly
 
-*TODO*
+```{r}
+quast_report %>%
+    select(Assembly, `# contigs (>= 1000 bp)`, `Total length (>= 1000 bp)`,
+           N50)
+```
 
-# Plasmids and Potential antibiotic resistance
+## plot
 
-*TODO*
+```{r out.height = "460px", out.width='800px', echo=FALSE}
+knitr::include_graphics("./quast_results/latest/basic_stats/cumulative_plot.pdf")
+```
+
+# Plasmids and Antibiotic resistance
+
+```{r include=FALSE}
+resistance <- read_tsv("hybrid.resistance.txt")
+plasmids <- read_tsv("scaffolds.tsv")
+```
+
+## Antiobiotic resistance
+
+```{r}
+resistance
+```
+
+## Plasmids
+
+```{r}
+plasmids
+```
+
 
 
 

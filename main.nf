@@ -84,6 +84,7 @@ workflow {
         .set{css}
     make_report(rmd, css,
                 fastqc_for_multiqc, quast.out.report,
-                download_related.out.best_hit, mlst_check.out.mlst
+                download_related.out.best_hit, mlst_check.out.mlst,
+                abricate.out.results, platon.out.results
     )
 }
