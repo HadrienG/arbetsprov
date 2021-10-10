@@ -122,6 +122,7 @@ def main():
     logger = logging.getLogger(__name__)
     args = parser.parse_args()
     best_hit = parse_taxonomy(args.lca)
+    print(best_hit)
     res = query_assemblies(best_hit)
 
 
