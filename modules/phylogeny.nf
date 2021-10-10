@@ -63,12 +63,13 @@ process concat_msa {
 process fasttree {
     tag "phylogeny"
     label "fasttree"
+    publishDir "${params.output}/", mode: "copy"
     input:
         path(msa)
     output:
-        path("tree")
+        path("phylo.tree")
     script:
         """
-        fasttree < "${msa}" > tree
+        fasttree < "${msa}" > phylo.tree
         """
 }

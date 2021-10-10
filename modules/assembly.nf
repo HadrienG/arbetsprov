@@ -39,12 +39,13 @@ process spades_hybrid {
         tuple val(_0), path(reads)
         tuple val(_1), path(long_reads)
     output:
-        tuple val("hybrid"), path("assembly/scaffolds.fasta"), emit: contigs
+        tuple val("hybrid"), path("hybrid.contigs.fasta"), emit: contigs
     script:
         def mem = "${task.memory.toString().replaceAll(/[\sGB]/,'')}"
         """
         spades.py --threads "${task.cpus}" -m "${mem}" \
             -k 27,47,77,107,127 -s "${reads}" --nanopore "${long_reads}" \
             -o assembly
+        mv assembly/scaffolds.fasta hybrid.contigs.fasta
         """
 }

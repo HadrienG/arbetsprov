@@ -53,7 +53,14 @@ nextflow run main.nf -profile docker \
 The pipeline output can be found in the `results/`directory by default.
 The output directory contains the following files:
 
-*TODO* describe outputs
+- `report.html`: html presentation summarising the overall results of the pipeline
+- `IonTorrent.contigs.fasta`and `hybrid.contigs.fasta`: the short reads and hybrid assemblies, respectively
+- `multiqc_report.html`: report summarising the reads and assembly QC and metrics
+- `quast_results/`: detailed information about the assemblies
+- `mlst_results.allele.csv`: results from `mlst_check`
+- `phylo.tree`: phylogenetic tree of sequenced genome and related genomes of the same species
+- `hybrid.resistance.txt`: abricate report for antibiotic resistance genes
+- `hybrid.contigs.tsv`: platon report for plasmid detection
 
 ## Installation and Prerequisites
 

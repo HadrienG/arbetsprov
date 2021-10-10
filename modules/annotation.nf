@@ -32,10 +32,11 @@ process rename_proteins {
 process mlst_check {
     tag "mlst: ${prefix}"
     label "mlst_check"
+    publishDir "${params.output}/", mode: "copy"
     input:
         tuple val(prefix), path(assembly), val(species)
     output:
-        tuple val(prefix), path("*.csv"), emit: mlst
+        tuple val(prefix), path("mlst_results.allele.csv"), emit: mlst
     script:
         """
         get_sequence_type -s "\$(cat ${species})" "${assembly}"
@@ -46,6 +47,7 @@ process mlst_check {
 process abricate {
     tag "antiobiotic resistance: ${prefix}"
     label "abricate"
+    publishDir "${params.output}/", mode: "copy"
     input:
         tuple val(prefix), path(assembly)
     output:
@@ -72,11 +74,12 @@ process platon_db {
 process platon {
     tag "plasmid detection: ${prefix}"
     label "platon"
+    publishDir "${params.output}/", mode: "copy"
     input:
         tuple val(prefix), path(assembly)
         path(database)
     output:
-        tuple val(prefix), path("scaffolds.*"), emit: results
+        tuple val(prefix), path("hybrid.contigs.tsv"), emit: results
     script:
         """
         platon --threads "${task.cpus}" --db "${database}" \

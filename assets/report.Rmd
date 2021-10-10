@@ -173,12 +173,12 @@ knitr::include_graphics("./quast_results/latest/basic_stats/cumulative_plot.pdf"
 
 ## tools
 
-- `abricate` (anibiotic resistance)
+- `abricate` (antibiotic resistance)
 - `platon` (plasmid discovery)
 
 ```{r include=FALSE}
 resistance <- read_tsv("hybrid.resistance.txt")
-plasmids <- read_tsv("scaffolds.tsv")
+plasmids <- read_tsv("hybrid.contigs.tsv")
 ```
 
 ## Antiobiotic resistance
