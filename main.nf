@@ -9,6 +9,7 @@ include {prodigal; rename_proteins; mlst_check; abricate;
          platon_db; platon} from "./modules/annotation.nf"
 include {cd_hit; select_clusters; mafft;
          concat_msa; fasttree} from "./modules/phylogeny.nf"
+include {make_report} from "./modules/reporting.nf"
 
 workflow {
     Channel
@@ -75,5 +76,11 @@ workflow {
     platon(spades_hybrid.out.contigs, platon_db.out.database)
 
     /* Reporting */
-    // TODO
+    Channel
+        .fromPath(params.rmd)
+        .set{rmd}
+    Channel
+        .fromPath(params.css)
+        .set{css}
+    make_report(rmd, css, fastqc_for_multiqc)
 }

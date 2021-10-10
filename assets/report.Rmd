@@ -1,0 +1,91 @@
+---
+title: "Workflow Report"
+author: "Hadrien Gourlé"
+output:
+    revealjs::revealjs_presentation:
+        highlight: pygments
+        center: true
+        transition: slide
+        css: custom.css
+        reveal_options:
+            slideNumber: true
+---
+
+```{r load_pkgs, include=FALSE}
+library(fastqcr)
+```
+
+# Quality Control
+
+```{r read_qc, include=FALSE}
+qc <- qc_aggregate("./")
+raw_file <- qc_read("IonTorrent_fastqc.zip")
+trimmed_file <- qc_read("IonTorrentTrimmed_fastqc.zip")
+```
+
+## summary statistics
+
+```{r}
+qc_stats(qc)
+```
+
+## sequence quality
+
+<div class="container">
+<div class="col">
+raw sequences
+```{r echo=FALSE}
+qc_plot(raw_file, "Per sequence quality scores")
+```
+</div>
+<div class="col">
+trimmed sequences
+```{r echo=FALSE}
+qc_plot(trimmed_file, "Per sequence quality scores")
+```
+</div>
+</div>
+
+
+## base quality
+
+<div class="container">
+<div class="col">
+raw sequences
+```{r echo=FALSE, warning=FALSE}
+qc_plot(raw_file, "Per base sequence quality")
+```
+</div>
+<div class="col">
+trimmed sequences
+```{r echo=FALSE, warning=FALSE}
+qc_plot(trimmed_file, "Per base sequence quality")
+```
+</div>
+</div>
+
+## gc content
+
+```{r echo=FALSE}
+qc_plot(trimmed_file, "Per sequence GC content")
+```
+
+
+# Short Reads Assembly
+
+*TODO*
+
+# Taxonomy
+
+*TODO*
+
+# Hybrid Assembly
+
+*TODO*
+
+# Plasmids and Potential antibiotic resistance
+
+*TODO*
+
+
+
