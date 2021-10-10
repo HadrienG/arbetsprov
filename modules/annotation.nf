@@ -29,6 +29,19 @@ process rename_proteins {
         """
 }
 
+process mlst_check {
+    tag "mlst: ${prefix}"
+    label "mlst_check"
+    input:
+        tuple val(prefix), path(assembly), val(species)
+    output:
+        tuple val(prefix), path("*.csv")
+    script:
+        """
+        get_sequence_type -s "${species}" "${assembly}"
+        """
+}
+
 
 process abricate {
     tag "antiobiotic resistance: ${prefix}"
