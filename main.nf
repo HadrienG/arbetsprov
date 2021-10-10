@@ -5,7 +5,7 @@ include {fastqc; fastp; quast; multiqc} from "./modules/qc.nf"
 include {spades; spades_hybrid} from "./modules/assembly.nf"
 include {build_db; assign_taxonomy;
          download_related} from "./modules/taxonomy.nf"
-include {prodigal; rename_proteins; abricate;
+include {prodigal; rename_proteins; mlst_check; abricate;
          platon_db; platon} from "./modules/annotation.nf"
 include {cd_hit; select_clusters; mafft;
          concat_msa; fasttree} from "./modules/phylogeny.nf"
@@ -50,6 +50,11 @@ workflow {
     download_related(assign_taxonomy.out.lca)
     prodigal(spades.out.contigs)
     rename_proteins(prodigal.out.proteins)
+
+    spades.out.contigs
+        .combine(download_related.out.best_hit, by: 0)
+        .set{input_for_mlst}
+    mlst_check(input_for_mlst)
 
     rename_proteins.out.proteins
         .join(download_related.out.proteomes, by:0)

@@ -38,7 +38,7 @@ process mlst_check {
         tuple val(prefix), path("*.csv")
     script:
         """
-        get_sequence_type -s "${species}" "${assembly}"
+        get_sequence_type -s "\$(cat ${species})" "${assembly}"
         """
 }
 
