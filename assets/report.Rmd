@@ -1,6 +1,6 @@
 ---
 title: "Workflow Report"
-author: "Hadrien Gourlé"
+subtitle: "hadrieng/arbetsprov"
 output:
     revealjs::revealjs_presentation:
         highlight: pygments
@@ -18,6 +18,12 @@ library(tidyverse)
 
 # Quality Control
 
+## tools
+
+- `fastqc` (quality control and plotting)
+- `fastp` (quality filtering and trimming, adapter trimming)
+- `fastqcr` (metrics aggregation and plotting)
+
 ```{r read_qc, include=FALSE}
 qc <- qc_aggregate("./")
 raw_file <- qc_read("IonTorrent_fastqc.zip")
@@ -26,11 +32,18 @@ trimmed_file <- qc_read("IonTorrentTrimmed_fastqc.zip")
 
 ## summary statistics
 
-```{r}
-qc_stats(qc)
+
+```{r echo=FALSE}
+qc_stats(qc) %>%
+    select(sample,
+           GC = pct.gc,
+           `n seq` = tot.seq,
+           `length` = seq.length) %>% 
+    knitr::kable()
 ```
 
 ## sequence quality
+
 
 <div class="container">
 <div class="col">
@@ -50,6 +63,7 @@ qc_plot(trimmed_file, "Per sequence quality scores")
 
 ## base quality
 
+
 <div class="container">
 <div class="col">
 raw sequences
@@ -67,6 +81,7 @@ qc_plot(trimmed_file, "Per base sequence quality")
 
 ## gc content
 
+
 ```{r echo=FALSE}
 qc_plot(trimmed_file, "Per sequence GC content")
 ```
@@ -78,14 +93,27 @@ qc_plot(trimmed_file, "Per sequence GC content")
 quast_report <- read_tsv("quast_results/latest/transposed_report.tsv")
 ```
 
-```{r}
+## tools
+
+- `spades` (assembly)
+- `quast` (assembly qc)
+
+##
+
+```{r echo = FALSE}
 quast_report %>%
     filter(Assembly == "IonTorrent") %>% 
     select(Assembly, `# contigs (>= 1000 bp)`, `Total length (>= 1000 bp)`,
-           N50)
+           N50) %>% 
+    knitr::kable()
 ```
 
 # Taxonomy
+
+## tools
+
+- `mmseqs2` (taxonomy assignment. db: swissprot)
+- `mlst_check` (MLST typing. db: pasteur)
 
 ```{r include=FALSE}
 best_hit <- read_delim("best_hit.txt", delim = "\t", col_names = FALSE)$X1 %>% 
@@ -93,33 +121,60 @@ best_hit <- read_delim("best_hit.txt", delim = "\t", col_names = FALSE)$X1 %>%
 mlst <- read_tsv("mlst_results.allele.csv", skip = 5)
 ```
 
-```{r}
-best_hit
+## Our mystery organism is
+
+*`r best_hit`*
+
+## mlst
+
+```{r echo=FALSE}
+mlst %>% 
+    select(-`New ST`, -Contamination) %>% 
+    t() %>%
+    knitr::kable()
 ```
 
-```{r}
-mlst
-```
+# Phylogeny
 
-## Phylogeny
+## tools
 
-Module under construction
+- `prodigal` (protein prediction)
+- `cd-hit` (clustering)
+- `mafft` (multiple sequence alignment)
+- `fasttree` (tree building)
+
+**Results not available :-(**
 
 # Hybrid Assembly
 
-```{r}
+## tools
+
+- `spades` (assembly)
+- `quast` (assembly qc)
+
+##
+
+```{r echo=FALSE}
 quast_report %>%
     select(Assembly, `# contigs (>= 1000 bp)`, `Total length (>= 1000 bp)`,
-           N50)
+           N50) %>% 
+    knitr::kable()
 ```
 
-## plot
+##
 
 ```{r out.height = "460px", out.width='800px', echo=FALSE}
 knitr::include_graphics("./quast_results/latest/basic_stats/cumulative_plot.pdf")
 ```
 
+## {data-background-iframe="./quast_results/latest/icarus_viewers/contig_size_viewer.html"}
+
 # Plasmids and Antibiotic resistance
+
+## tools
+
+- `abricate` (anibiotic resistance)
+- `platon` (plasmid discovery)
 
 ```{r include=FALSE}
 resistance <- read_tsv("hybrid.resistance.txt")
@@ -128,14 +183,18 @@ plasmids <- read_tsv("scaffolds.tsv")
 
 ## Antiobiotic resistance
 
-```{r}
-resistance
+```{r echo=FALSE}
+resistance %>% 
+    select(-COVERAGE_MAP, -GAPS, -`#FILE`, -COVERAGE, -DATABASE,
+           -ACCESSION, -`%COVERAGE`, -`%IDENTITY`, -PRODUCT)
 ```
 
 ## Plasmids
 
-```{r}
-plasmids
+```{r echo=FALSE}
+plasmids %>% 
+    select(-RDS, -`Inc Type(s)`, -`# Replication`, -`# Mobilization`,
+           -`# Conjugation`, -`# OriT`, -`# rRNAs`, -`# Plasmid Hits`)
 ```
 
 
