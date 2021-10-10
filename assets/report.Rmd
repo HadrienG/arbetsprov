@@ -197,6 +197,19 @@ plasmids %>%
            -`# Conjugation`, -`# OriT`, -`# rRNAs`, -`# Plasmid Hits`)
 ```
 
+# Future perspectives
 
+## Automation
 
+- File watcher: [watchdog](https://github.com/gorakhargosh/watchdog)
+Trigger workflow on new files, upload data to long-term storage
+- Nextflow + cluster: change scheduler (SLURM, SGE, ...)
+- Nextflow + (private) cloud: kubernetes?
+- Track status: built-in scheduler or nf tower?
+
+## Pipeline improvements
+
+- Phylogeny quote fragile/buggy at the moment
+- Need better database than ncbi for related genomes
+- Variant calling a possible addition
 
